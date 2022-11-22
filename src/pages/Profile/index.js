@@ -20,8 +20,6 @@ const Profile = () => {
     }, 2000);
   };
 
-  const [size, setSize] = useState("large");
-
   const columns = [
     {
       title: "No",
@@ -81,7 +79,7 @@ const Profile = () => {
         />
         <Button
           shape="round"
-          size={size}
+          size='large'
           style={{
             background:
               "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)",
@@ -92,7 +90,7 @@ const Profile = () => {
         </Button>
         <Button
           shape="round"
-          size={size}
+          size='large'
           style={{
             background:
               "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)",

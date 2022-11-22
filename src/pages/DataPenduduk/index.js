@@ -19,16 +19,9 @@ const { useForm } = Form;
 const DataPenduduk = () => {
   const [dataPenduduk, setDataPenduduk] = useState([]);
   const [form] = useForm();
-  const [dataInput, setDataInput] = useState({
-    nik: "",
-    nama: "",
-    alamat: "",
-  });
   const [editId, setEditId] = useState(undefined);
   const [loading, setLoading] = useState(true);
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -78,10 +71,6 @@ const DataPenduduk = () => {
     },
   ];
 
-  const confirm = (e) => {
-    console.log(e);
-    message.success("uda diapus");
-  };
   const cancel = (e) => {
     console.log(e);
     message.error("gajadi diapus");
@@ -140,14 +129,6 @@ const DataPenduduk = () => {
     });
   };
 
-  const handleDataInput = (e) => {
-    console.log(e.target.value);
-    setDataInput((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
   const handleSubmit = (e) => {
     if (editId !== undefined) {
       putDataPenduduk(editId);
@@ -179,7 +160,7 @@ const DataPenduduk = () => {
         marginTop: "3rem",
       }}
     >
-      <Row justify={"center"} gutter={[40,40]}>
+      <Row justify={"center"} gutter={[40, 40]}>
         <Col span={22}>
           <Card
             title="Default size card"
@@ -213,9 +194,7 @@ const DataPenduduk = () => {
                 label="NIK"
                 type="text"
                 name="nik"
-                value={dataInput.nik}
                 placeholder="Masukkan Nik"
-                onChange={handleDataInput}
                 rules={[
                   {
                     min: 16,
@@ -229,9 +208,7 @@ const DataPenduduk = () => {
                 label="Nama :"
                 type="text"
                 name="nama"
-                value={dataInput.nama}
                 placeholder="Masukkan Nama"
-                onChange={handleDataInput}
               >
                 <Input />
               </Form.Item>
@@ -240,9 +217,7 @@ const DataPenduduk = () => {
                 label="Alamat :"
                 type="text"
                 name="alamat"
-                value={dataInput.alamat}
                 placeholder="Masukkan Alamat"
-                onChange={handleDataInput}
               >
                 <Input />
               </Form.Item>

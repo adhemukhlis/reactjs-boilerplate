@@ -1,3 +1,4 @@
+import API_URLS from "@/src/enums/api-urls";
 import ApiService from "@/src/services/clientBlog";
 import { Button, Form, Input, Checkbox, message } from "antd";
 import { useState } from "react";
@@ -5,14 +6,13 @@ import { useState } from "react";
 const { useForm } = Form;
 const Register = () => {
   const [load, setLoad] = useState(false);
-  const [size, setSize] = useState("large");
   const [form] = useForm();
   const onFinish = (values) => {
     setLoad(true);
     const { name, username, password } = form.getFieldsValue();
     ApiService.request({
       method: "post",
-      url: "auth/register",
+      url: API_URLS.AUTH_REGISTER,
       data: {
         name,
         username,
@@ -118,7 +118,7 @@ const Register = () => {
       >
         <Button
           shape="round"
-          size={size}
+          size='large'
           style={{
             background:
               "linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)",

@@ -41,6 +41,7 @@ const RouteStacks = () => {
           </PrivateRoute>
         }
       />
+      
       <Route
         path={`${URLS.PROFILE}/:username`}
         element={

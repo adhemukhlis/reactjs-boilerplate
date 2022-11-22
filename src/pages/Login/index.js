@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button, Form, Input, Checkbox, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import ApiService from "@/src/services/clientBlog";
-// import { Navigate } from "react-router-dom";
 import URLS from "@/src/enums/urls";
 
 const { useForm } = Form;
