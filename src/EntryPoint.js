@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import App from "@/src/App";
 import Spinner from "./components/loader3";
-require("./services/mock-adapter");
+// require("./services/mock-adapter");
 
 const Loader = () => {
   return (
