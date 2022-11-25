@@ -5,6 +5,7 @@ const URLS = {
 	DETAIL_USER: '/detail-user',
 	PROFILE: '/profile',
 	DATA_PENDUDUK: '/data-penduduk',
-	AUTH: '/auth'
+	AUTH: '/auth',
+	USERS: '/users'
 }
 export default URLS

@@ -9,7 +9,7 @@ import Container from '@/src/components/Container'
 
 import './index.css'
 
-const Profile = () => {
+const Users = () => {
 	const navigate = useNavigate()
 	const [users, setUsers] = useState({
 		data: [],
@@ -82,7 +82,7 @@ const Profile = () => {
 	return (
 		<Container>
 			<div style={{ padding: '2rem' }}>
-				<Card title="Profile Page">
+				<Card title="Users Page">
 					<Table
 						rowClassName={(record, index) =>
 							index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
@@ -114,4 +114,4 @@ const Profile = () => {
 		</Container>
 	)
 }
-export default Profile
+export default Users

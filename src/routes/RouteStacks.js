@@ -12,6 +12,7 @@ const DataPenduduk = lazy(() => import('../pages/DataPenduduk'))
 const DetailDataPenduduk = lazy(() => import('../pages/DetailDataPenduduk'))
 const Auth = lazy(() => import('../pages/Auth'))
 const DetailUser = lazy(() => import('../pages/DetailUser'))
+const Users = lazy(() => import('../pages/Users'))
 
 const RouteStacks = () => {
 	const loggedIn = () => {
@@ -73,6 +74,14 @@ const RouteStacks = () => {
 				element={
 					<PrivateRoute path={URLS.AUTH} allow={[loggedOut]} navigateTo={URLS.PROFILE}>
 						<Auth />
+					</PrivateRoute>
+				}
+			/>
+			<Route
+				path={URLS.USERS}
+				element={
+					<PrivateRoute path={URLS.USERS} allow={[loggedIn]} navigateTo={URLS.AUTH}>
+						<Users />
 					</PrivateRoute>
 				}
 			/>

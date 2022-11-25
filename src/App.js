@@ -1,12 +1,12 @@
-import React, { Fragment } from "react";
-import RouteService from "@/src/routes/RouteService";
+import React, { Fragment } from 'react'
+import RouteService from '@/src/routes/RouteService'
 
 const App = () => {
-  return (
-    <Fragment>
-      <RouteService />
-    </Fragment>
-  );
-};
+	return (
+		<Fragment>
+			<RouteService />
+		</Fragment>
+	)
+}
 
-export default App;
+export default App
