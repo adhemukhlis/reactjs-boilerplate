@@ -24,13 +24,15 @@ const Login = () => {
 			.then((res) => {
 				message.success(res.data.message)
 				asyncLocalStorage.setItem('token', res.data.data.token).then(() => {
-					if (remember) {
-						asyncLocalStorage.setItem('username', username)
-					} else {
-						asyncLocalStorage.setItem('username', '')
-					}
-					setLoading(false)
-					navigate(URLS.PROFILE)
+					asyncLocalStorage.setItem('user_id', res.data.data.user_id).then(() => {
+						if (remember) {
+							asyncLocalStorage.setItem('username', username)
+						} else {
+							asyncLocalStorage.setItem('username', '')
+						}
+						setLoading(false)
+						navigate(URLS.PROFILE)
+					})
 				})
 			})
 			.catch((err) => {

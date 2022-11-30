@@ -43,9 +43,10 @@ const ListMenu = () => {
 			onClick={handleClick}
 			selectedKeys={[currentPath]}
 			style={{
-				background: 'transparent',
+				backgroundColor: 'inherit',
 				border: 'none',
-				width: '60%'
+				width: '60%',
+				color: '#fff'
 			}}
 			mode="horizontal"
 			items={menu}
@@ -79,19 +80,11 @@ const AvatarMenu = () => {
 			label: 'Logout'
 		}
 	]
-	const userMenu = (
-		<Menu
-			onClick={handleClick}
-			style={{
-				border: 'none'
-			}}
-			items={menuItems}
-		/>
-	)
+	const userMenu = <Menu onClick={handleClick} items={menuItems} />
 
 	return (
 		<div>
-			{isGranted === true ? (
+			{isGranted ? (
 				<Dropdown placement="bottomRight" trigger={['click']} overlay={userMenu}>
 					<Avatar
 						src={profileInfoDataProfilePicture}
@@ -102,9 +95,7 @@ const AvatarMenu = () => {
 						}}
 					/>
 				</Dropdown>
-			) : (
-				<></>
-			)}
+			) : null}
 		</div>
 	)
 }
@@ -114,7 +105,6 @@ const AuthMenu = () => {
 	const menu = useMemo(() => (isGranted ? [] : publicHeaderMenuConfig), [isGranted])
 	const navigate = useNavigate()
 	const { pathname } = useLocation()
-
 	return (
 		<>
 			{!isGranted &&
@@ -136,16 +126,19 @@ const AuthMenu = () => {
 }
 
 const HeaderWrapper = memo(() => {
+	const stickyMenuStyle = { position: 'sticky', top: 0, zIndex: 1 }
 	const gcoSettingLogo =
 		'https://www.clipartmax.com/png/full/293-2933428_its-a-girl-banner-clip-art.png'
 	return (
 		<Header
+			id="top-header"
 			style={{
+				...stickyMenuStyle,
+				backgroundColor: '#000',
 				flexDirection: 'row',
 				display: 'flex',
 				alignItems: 'center'
-			}}
-			className="Header">
+			}}>
 			{!!gcoSettingLogo && (
 				<div
 					style={{

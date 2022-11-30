@@ -1,18 +1,17 @@
-import API_URLS from '@/src/enums/api-urls'
 import ApiService from '@/src/services/clientBlog'
 import { Button, Form, Input, message } from 'antd'
 import { useState } from 'react'
 
 const { useForm } = Form
 const Register = () => {
-	const [load, setLoad] = useState(false)
+	const [loading, setLoading] = useState(false)
 	const [form] = useForm()
 	const onFinish = (values) => {
-		setLoad(true)
+		setLoading(true)
 		const { name, username, password } = form.getFieldsValue()
 		ApiService.request({
 			method: 'post',
-			url: API_URLS.AUTH_REGISTER,
+			url: 'auth/register',
 			data: {
 				name,
 				username,
@@ -37,7 +36,7 @@ const Register = () => {
 				}
 			})
 			.finally(() => {
-				setLoad(false)
+				setLoading(false)
 			})
 	}
 
@@ -111,7 +110,7 @@ const Register = () => {
 					style={{
 						background: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)'
 					}}
-					loading={load}
+					loading={loading}
 					type="primary"
 					htmlType="submit">
 					Daftar

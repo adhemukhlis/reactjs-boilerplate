@@ -1,7 +1,9 @@
 import URLS from '@/src/enums/urls'
 
 export const privateHeaderMenuConfig = [
-	{ key: URLS.PROFILE, label: 'Profile' }
+	{ key: URLS.PROFILE, label: 'Profile' },
+	{ key: URLS.LANDING, label: 'Home' },
+
 	// {
 	// 	key: 'package-parent',
 	// 	label: 'App Package',

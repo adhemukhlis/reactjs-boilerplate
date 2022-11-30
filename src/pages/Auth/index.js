@@ -1,7 +1,7 @@
 import { Tabs, Row, Col, Card } from 'antd'
 import React from 'react'
-import Login from '../Login'
-import Register from '../Register'
+import Login from '@/src/pages/Login'
+import Register from '@/src/pages/Register'
 const Auth = () => {
 	const items = [
 		{ label: 'Register', key: 'item-1', children: <Register /> },

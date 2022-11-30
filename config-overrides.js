@@ -1,13 +1,9 @@
-const {
- override,
- useBabelRc,
- fixBabelImports
-} = require("customize-cra");
+const { override, useBabelRc, fixBabelImports } = require('customize-cra')
 module.exports = override(
- fixBabelImports('import', {
- 	libraryName: 'antd',
- 	libraryDirectory: 'es',
- 	style: 'css'
- }),
- useBabelRc()
-);
+	fixBabelImports('import', {
+		libraryName: 'antd',
+		libraryDirectory: 'es',
+		style: 'css'
+	}),
+	useBabelRc()
+)
