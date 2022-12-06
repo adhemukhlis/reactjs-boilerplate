@@ -1,32 +1,34 @@
 import { useState, useEffect } from 'react'
 import { Button, Form, Input, Checkbox, message } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import ApiService from '@/src/services/clientBlog'
 import URLS from '@/src/enums/urls'
 import asyncLocalStorage from '@/src/utils/asyncLocalStorage'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import AUTH_ACTIONS from '@/src/store/modules/Auth/actions'
 import ACTION_TYPES from '@/src/store/types/action-types'
+import AUTH_GETTERS from '@/src/store/modules/Auth/getters'
 
 const { useForm } = Form
 const Login = () => {
 	const [loading, setLoading] = useState(false)
 	const navigate = useNavigate()
 	const [form] = useForm()
+	const remember_me = useSelector(AUTH_GETTERS.loginRememberUsername)
 
 	const dispatch = useDispatch()
-	const authLogin = ({ username, password }) =>
+	const authLogin = ({ username, password, remember }) =>
 		dispatch(
 			AUTH_ACTIONS[ACTION_TYPES.POST_AUTH_LOGIN]({
 				username,
-				password
+				password,
+				remember
 			})
 		)
 
 	const onFinish = (values) => {
 		setLoading(true)
 		const { username, password, remember } = form.getFieldsValue()
-		authLogin({ username, password })
+		authLogin({ username, password, remember })
 			.then((res) => {
 				message.success(res.data.message)
 				setLoading(false)
@@ -77,6 +79,9 @@ const Login = () => {
 			}}
 			onFinish={onFinish}
 			onFinishFailed={onFinishFailed}
+			initialValues={{
+				remember: !!remember_me
+			}}
 			autoComplete="off">
 			<Form.Item
 				label="Username"

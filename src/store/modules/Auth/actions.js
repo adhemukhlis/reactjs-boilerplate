@@ -6,7 +6,7 @@ import { get } from 'lodash'
 import AUTH_GETTERS from './getters'
 
 const AUTH_ACTIONS = {
-	[ACTION_TYPES.POST_AUTH_LOGIN]({ username, password }) {
+	[ACTION_TYPES.POST_AUTH_LOGIN]({ username, password, remember }) {
 		return async (dispatch, state) => {
 			return await ApiService.request({
 				url: API_URLS.AUTH_LOGIN,
@@ -21,6 +21,11 @@ const AUTH_ACTIONS = {
 					const statusCode = get(response, 'data.statusCode', null)
 					const message = get(response, 'data.message', 'undefined message')
 					dispatch({ type: REDUCER_TYPES.AUTH_LOGIN, data, statusCode, message })
+					if (remember) {
+						dispatch({ type: REDUCER_TYPES.AUTH_REMEMBER_ME, username })
+					} else {
+						dispatch({ type: REDUCER_TYPES.AUTH_REMEMBER_ME, username: '' })
+					}
 					return response
 				})
 				.catch((error) => {

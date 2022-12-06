@@ -20,7 +20,7 @@ const App = () => {
 		},
 		(error) => {
 			console.error('interceptor * ', error.response.data.statusCode)
-			if ([401].includes(error.response.data.statusCode)) {
+			if ([401, 400].includes(error.response.data.statusCode)) {
 				authLogout()
 				message.error('token expired')
 			}

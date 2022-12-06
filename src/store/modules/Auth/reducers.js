@@ -11,5 +11,8 @@ export default createReducer(initialState, {
 	},
 	[REDUCER_TYPES.AUTH_LOGOUT](state, { type }) {
 		return set(state, 'login.data', {})
+	},
+	[REDUCER_TYPES.AUTH_REMEMBER_ME](state, { type, username }) {
+		return objectMerge(state, 'remember_me', { username })
 	}
 })
