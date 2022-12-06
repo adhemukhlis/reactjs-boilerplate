@@ -11,11 +11,17 @@ import { isEmpty } from 'lodash'
 
 import getResponsive from '@/src/utils/getResponsive'
 import asyncLocalStorage from '@/src/utils/asyncLocalStorage'
+import { useStore, useDispatch } from 'react-redux'
+import AUTH_GETTERS from '@/src/store/modules/Auth/getters'
+import AUTH_ACTIONS from '@/src/store/modules/Auth/actions'
+import ACTION_TYPES from '@/src/store/types/action-types'
 
 const { Header } = Layout
 
 const ListMenu = () => {
-	const isGranted = !isEmpty(localStorage.getItem('token'))
+	const store = useStore()
+	const dispatch = useDispatch()
+	const isGranted = !isEmpty(AUTH_GETTERS.loginToken(store.getState()))
 	const menu = useMemo(() => (isGranted ? privateHeaderMenuConfig : []), [isGranted])
 
 	const { pathname } = useLocation()
@@ -23,6 +29,7 @@ const ListMenu = () => {
 	const [currentPath, setCurrentPath] = useState('')
 	const findMenu = menu.find((item) => item.key === pathname)
 
+	const authLogout = () => dispatch(AUTH_ACTIONS[ACTION_TYPES.POST_AUTH_LOGOUT]())
 	useEffect(() => {
 		if (findMenu) {
 			setCurrentPath(findMenu.key)
@@ -31,7 +38,7 @@ const ListMenu = () => {
 
 	const handleClick = (e) => {
 		if (e.key === 'button_logout') {
-			asyncLocalStorage.setItem('token', '').then(() => {
+			authLogout().then(()=>{
 				navigate(URLS.AUTH)
 			})
 		} else {
@@ -56,12 +63,14 @@ const ListMenu = () => {
 
 const AvatarMenu = () => {
 	const profileInfoDataProfilePicture = 'https://joeschmoe.io/api/v1/random'
-	const isGranted = !isEmpty(localStorage.getItem('token'))
+	const store = useStore()
+	const isGranted = !isEmpty(AUTH_GETTERS.loginToken(store.getState()))
 	const navigate = useNavigate()
-
+	const dispatch = useDispatch()
+	const authLogout = () => dispatch(AUTH_ACTIONS[ACTION_TYPES.POST_AUTH_LOGOUT]())
 	const handleClick = (e) => {
 		if (e.key === 'button_logout') {
-			asyncLocalStorage.setItem('token', '').then(() => {
+			authLogout().then(()=>{
 				navigate(URLS.AUTH)
 			})
 		} else {
@@ -101,7 +110,8 @@ const AvatarMenu = () => {
 }
 
 const AuthMenu = () => {
-	const isGranted = !isEmpty(localStorage.getItem('token'))
+	const store = useStore()
+	const isGranted = !isEmpty(AUTH_GETTERS.loginToken(store.getState()))
 	const menu = useMemo(() => (isGranted ? [] : publicHeaderMenuConfig), [isGranted])
 	const navigate = useNavigate()
 	const { pathname } = useLocation()

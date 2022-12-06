@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import ApiService from '@/src/services/clientBlog'
 import { Card, Row, Col, Descriptions } from 'antd'
 import Container from '@/src/components/Container'
 import moment from 'moment'
 import UploadProfile from '@/src/components/UploadImageProfile'
+import AUTH_GETTERS from '@/src/store/modules/Auth/getters'
+import { useDispatch, useSelector, useStore } from 'react-redux'
+import USERS_ACTIONS from '@/src/store/modules/Users/actions'
+import ACTION_TYPES from '@/src/store/types/action-types'
+import USERS_GETTERS from '@/src/store/modules/Users/getters'
 
 const Profile = () => {
+	const dispatch = useDispatch()
+	const dataProfile = useSelector(USERS_GETTERS.getUsersProfile)
+	const store = useStore()
 	const [profile, setProfile] = useState({
 		data: {
 			name: '',
@@ -15,93 +22,38 @@ const Profile = () => {
 		},
 		loading: true
 	})
-	const token = localStorage.getItem('token')
 
-	const fetchProfile = () => {
-		const user_id = localStorage.getItem('user_id') || ''
-		setProfile((prev) => ({
-			...prev,
-			loading: true
-		}))
-		ApiService.request({
-			url: `/users/id/${user_id}`,
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
-		})
-			.then((res) => {
-				setProfile((prev) => ({
-					...prev,
-					data: res.data.data,
-					loading: false
-				}))
-			})
-			.catch((err) => {
-				setProfile((prev) => ({
-					...prev,
-					loading: false
-				}))
-			})
-	}
+	const getUsersById = () => dispatch(USERS_ACTIONS[ACTION_TYPES.GET_USERS_ID]())
+	const postUsersChangeAvatar = (file) => dispatch(USERS_ACTIONS[ACTION_TYPES.POST_USERS_CHANGE_AVATAR]({file}))
+
 	const handleUpload = (file) => {
+		const token = AUTH_GETTERS.loginToken(store.getState())
 		if (file !== undefined) {
-			setProfile((prev) => ({
-				...prev,
-				data: {
-					...prev.data,
-					avatar: ''
-				},
-				loading: true
-			}))
-			const body = {
-				avatar: file
-			}
-			ApiService.request({
-				method: 'POST',
-				url: '/users/change-avatar',
-				headers: {
-					Authorization: `Bearer ${token}`,
-					'Content-Type': 'multipart/form-data'
-				},
-				data: body
-			})
-				.then((response) => {
-					setProfile((prev) => ({
-						...prev,
-						data: {
-							...prev.data,
-							avatar: response.data.data.avatar
-						},
-						loading: false
-					}))
-					return response.data.data.avatar
-				})
-				.catch((error) => {
-					throw error
-				})
+			
+			postUsersChangeAvatar(file)
 		}
 	}
 	useEffect(() => {
-		fetchProfile()
+		getUsersById()
 	}, [])
 
 	return (
 		<Container>
 			<div style={{ padding: '2rem' }}>
+				{JSON.stringify(dataProfile)}
 				<Card title="Profile Page">
 					<Row>
 						<Col span={8}>
-							<UploadProfile onReadyUpload={handleUpload} imageUrl={profile.data.avatar} />
+							<UploadProfile onReadyUpload={handleUpload} imageUrl={dataProfile.avatar} />
 						</Col>
 						<Col span={16}>
 							<Descriptions
 								title="User Info"
 								column={{ xxl: 3, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }}>
-								<Descriptions.Item label="Name">{profile.data.name}</Descriptions.Item>
-								<Descriptions.Item label="UserName">{profile.data.username}</Descriptions.Item>
+								<Descriptions.Item label="Name">{dataProfile.name}</Descriptions.Item>
+								<Descriptions.Item label="UserName">{dataProfile.username}</Descriptions.Item>
 								<Descriptions.Item label="Join Date">
-									{moment(profile.data.createdAt).format('DD MMM YYYY')}
+									{moment(dataProfile.createdAt).format('DD MMM YYYY')}
 								</Descriptions.Item>
 							</Descriptions>
 						</Col>

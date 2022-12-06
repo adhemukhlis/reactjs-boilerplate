@@ -3,6 +3,8 @@ import { Route, Routes } from 'react-router-dom'
 import PrivateRoute from '@/src/routes/PrivateRoute'
 import { Navigate } from 'react-router-dom'
 import URLS from '@/src/enums/urls'
+import { useStore } from 'react-redux'
+import AUTH_GETTERS from '../store/modules/Auth/getters'
 
 // pages
 const Page404 = lazy(() => import('../pages/404'))
@@ -15,12 +17,14 @@ const DetailUser = lazy(() => import('../pages/DetailUser'))
 const Users = lazy(() => import('../pages/Users'))
 
 const RouteStacks = () => {
+	const store = useStore()
 	const loggedIn = () => {
-		const token = localStorage.getItem('token') || ''
+		
+		const token = AUTH_GETTERS.loginToken(store.getState())
 		return token.length > 0
 	}
 	const loggedOut = () => {
-		const token = localStorage.getItem('token') || ''
+		const token = AUTH_GETTERS.loginToken(store.getState())
 		return token === ''
 	}
 

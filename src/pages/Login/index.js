@@ -4,36 +4,33 @@ import { useNavigate } from 'react-router-dom'
 import ApiService from '@/src/services/clientBlog'
 import URLS from '@/src/enums/urls'
 import asyncLocalStorage from '@/src/utils/asyncLocalStorage'
+import { useDispatch } from 'react-redux'
+import AUTH_ACTIONS from '@/src/store/modules/Auth/actions'
+import ACTION_TYPES from '@/src/store/types/action-types'
 
 const { useForm } = Form
 const Login = () => {
 	const [loading, setLoading] = useState(false)
 	const navigate = useNavigate()
 	const [form] = useForm()
+
+	const dispatch = useDispatch()
+	const authLogin = ({ username, password }) =>
+		dispatch(
+			AUTH_ACTIONS[ACTION_TYPES.POST_AUTH_LOGIN]({
+				username,
+				password
+			})
+		)
+
 	const onFinish = (values) => {
 		setLoading(true)
 		const { username, password, remember } = form.getFieldsValue()
-		ApiService.request({
-			method: 'post',
-			url: 'auth/login',
-			data: {
-				username,
-				password
-			}
-		})
+		authLogin({ username, password })
 			.then((res) => {
 				message.success(res.data.message)
-				asyncLocalStorage.setItem('token', res.data.data.token).then(() => {
-					asyncLocalStorage.setItem('user_id', res.data.data.user_id).then(() => {
-						if (remember) {
-							asyncLocalStorage.setItem('username', username)
-						} else {
-							asyncLocalStorage.setItem('username', '')
-						}
-						setLoading(false)
-						navigate(URLS.PROFILE)
-					})
-				})
+				setLoading(false)
+				navigate(URLS.PROFILE)
 			})
 			.catch((err) => {
 				console.log(err)
@@ -50,8 +47,6 @@ const Login = () => {
 					message.error(err.response.data.message)
 				}
 			})
-
-		console.log('Success:', values)
 	}
 	const onFinishFailed = (errorInfo) => {
 		console.log('Failed:', errorInfo)
